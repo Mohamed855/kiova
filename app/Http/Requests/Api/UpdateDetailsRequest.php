@@ -25,7 +25,7 @@ class UpdateDetailsRequest extends FormRequest
             'name'          => 'required|min:10|max:50',
             'email'         => 'required|string|email|max:255|unique:users',
             'phone'         => 'required|regex:/(01)[0-9]{9}/',
-            'password'      => 'required||min:8|max:30|confirmed|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+            'password'      => 'required||min:8|max:16|confirmed|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
             'profile_image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:10000',
         ];
     }
@@ -46,8 +46,8 @@ class UpdateDetailsRequest extends FormRequest
             'phone.regex'            => 'Please enter a valid number',
 
             'password.required'      => 'Password is required',
-            'password.min'           => 'Password must be between 8-30 characters',
-            'password.max'           => 'Password must be between 8-30 characters',
+            'password.min'           => 'Password must be between 8-16 characters',
+            'password.max'           => 'Password must be between 8-16 characters',
             'password.regex'         => 'Password must contains numbers, characters upper-lower case and special characters',
 
             'profile_image.required' => 'please upload image first',

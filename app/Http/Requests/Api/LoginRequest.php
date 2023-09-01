@@ -22,8 +22,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'     => 'required|email|exists:users',
-            'password'  => 'required|min:8|max:30',
+            'email'     => 'required',
+            'password'  => 'required',
         ];
     }
 
@@ -31,12 +31,8 @@ class LoginRequest extends FormRequest
     {
         return [
             'email.required'    => 'Email is required',
-            'email.email'       => 'Email not valid',
-            'email.exists'      => 'Email not exists',
 
             'password.required' => 'Password is required',
-            'password.min'      => 'Password must be between 8-30 characters',
-            'password.max'      => 'Password must be between 8-30 characters',
         ];
     }
 }

@@ -1,9 +1,17 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\ComponentController;
+use App\Http\Controllers\Admin\Auth\AdminLoginController;
+use App\Http\Controllers\Api\AboutController;
+use App\Http\Controllers\Api\Auth\RestoreController;
+use App\Http\Controllers\Api\Auth\SignInController;
+use App\Http\Controllers\Api\Auth\LogoutController;
+use App\Http\Controllers\Api\Auth\SignUpController;
+use App\Http\Controllers\Api\Auth\UpdatePasswordController;
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\ContactController;
-use App\Http\Controllers\Api\PlanController;
+use App\Http\Controllers\Api\PortfolioController;
+use App\Http\Controllers\Api\PricingController;
+use App\Http\Controllers\Api\ServicesController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,49 +27,85 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Api check password
-Route::middleware('checkPassword')->group( function () {
-    // Site components apis
-    Route::controller(ComponentController::class)->group(function () {
-        Route::get('services', 'get_services');
-        Route::get('projects', 'get_projects');
-        Route::get('faqs', 'get_faqs');
-        Route::get('partners', 'get_partners');
-        Route::get('reviews', 'get_reviews');
-    });
-
-    // Contact apis
-    Route::controller(ContactController::class)->group(function () {
-        Route::post('send_call_request', 'send_call_request');
-        Route::post('send_message', 'send_message');
-    });
-
-    // Auth apis
-    Route::controller(AuthController::class)->group(function (){
-        Route::post('register', 'register');
-        Route::post('login', 'login');
-        Route::post('logout', 'logout') -> middleware('auth:api');
-        Route::post('refresh', 'refresh') -> middleware('auth:api');
-    });
-
-
-    // Pricing apis
-    Route::group(['prefix' => 'pricing'], function () {
-        Route::controller(PlanController::class)->group(function () {
-            Route::get('plans', 'get_plans');
-            Route::get('plan_services', 'get_plan_services');
-            Route::post('custom_plan', 'add_custom') -> middleware('auth:api');
+Route::middleware('checkPassword')->group(function () {
+    // Admin Apis
+    Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+        // Admin Login
+        Route::get('login', [AdminLoginController::class, 'login']);
+        Route::post('login', [AdminLoginController::class, 'check_admin_credentials']);
+        // Dashboard
+        Route::middleware('checkAdminToken:admin-api')->group(function () {
+            // Dashboard Apis
         });
     });
 
-    // Apis controls user account
-    Route::group(['prefix' => 'user', 'middleware' => 'auth:api'], function () {
-        Route::controller(UserController::class)->group(function () {
-            Route::get('profile/{id}', 'profile');
-            Route::get('edit/{id}', 'edit');
-            Route::post('update/{id}', 'update');
-            Route::post('update_profile_pic/{id}', 'update_profile_picture');
-            Route::post('send_review/{id}', 'send_review');
-            Route::delete('delete/{id}', 'destroy');
+    // Site Apis
+    Route::namespace('Api')->group(function () {
+        //
+        // Site Apis
+        //
+        // Home Page
+        Route::get('/', [HomeController::class, 'index']);
+        // About Page
+        Route::get('about_us', [AboutController::class, 'about']);
+        // Services Page
+        Route::get('services', [ServicesController::class, 'services']);
+        // Portfolio Page
+        Route::get('portfolio', [PortfolioController::class, 'portfolio']);
+        //
+        // Auth Apis
+        //
+        // Sign Up
+        Route::get('signup', [SignUpController::class, 'signUp']);
+        Route::post('signup', [SignUpController::class, 'store_details']);
+        // Sign In
+        Route::get('signin', [SignInController::class, 'signin']);
+        Route::post('signin', [SignInController::class, 'check_credentials']);
+        // Restore
+        Route::get('restore', [RestoreController::class, 'restore']);
+        Route::post('restore', [RestoreController::class, 'send_email_code']);
+        // Verification
+        Route::get('verification', [RestoreController::class, 'verification']);
+        Route::post('verification', [RestoreController::class, 'check_code']);
+        // Update Password
+        Route::get('update_password', [UpdatePasswordController::class, 'update_password']);
+        Route::put('update_password', [UpdatePasswordController::class, 'confirm_password']);
+        // Logout
+        Route::post('logout', [LogoutController::class, 'logout'])->middleware('auth:api');
+        //
+        // Contact Apis
+        //
+        // Contact Page
+        Route::get('contact_us', [ContactController::class, 'contact']);
+        // Feedback
+        Route::post('feedback', [ContactController::class, 'feedback']);
+        // Call Request
+        Route::post('call_request', [ContactController::class, 'call_request']);
+        //
+        // Pricing Apis
+        //
+        // Pricing Page
+        Route::get('pricing', [PricingController::class, 'pricing']);
+        // Custom Plan
+        Route::post('custom_plan', [PricingController::class, 'custom_plan'])->middleware('auth:api');
+        //
+        // User Apis
+        //
+        Route::group(['prefix' => 'user', 'middleware' => 'auth:api'], function () {
+            Route::prefix('profile')->group(function () {
+                // Profile Page
+                Route::get('/{user_name}', [UserController::class, 'profile']);
+                // Edit Profile Page
+                Route::get('edit/{user_name}', [UserController::class, 'edit']);
+                // Update Profile
+                Route::put('update/{user_name}', [UserController::class, 'update']);
+                Route::put('update_pic/{user_name}', [UserController::class, 'update_picture']);
+                Route::put('delete_pic/{user_name}', [UserController::class, 'delete_pic']);
+                // Destroy Account
+                Route::delete('destroy/{user_name}', [UserController::class, 'destroy']);
+            });
+            // Send Review
+            Route::post('send_review/{user_name}', [UserController::class, 'send_review']);
         });
     });
 });

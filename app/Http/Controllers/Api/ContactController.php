@@ -10,13 +10,19 @@ use App\Traits\GeneralTrait;
 class ContactController extends Controller
 {
     use GeneralTrait;
-    public function send_call_request(CallRequest $request, string $id)
+
+    public function contact()
     {
-        // send call request
+        // contact us page
     }
 
-    public function send_message(ContactRequest $request, string $id)
+    public function feedback(ContactRequest $request, string $id)
     {
         // send message via contact us
+    }
+
+    public function call_request(CallRequest $request, string $id)
+    {
+        // send call request
     }
 }

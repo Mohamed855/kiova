@@ -14,7 +14,7 @@ class SignUpController extends Controller
 {
     use GeneralTrait;
 
-    public function signUp(LoginRequest $request)
+    public function sign_up()
     {
         //
     }

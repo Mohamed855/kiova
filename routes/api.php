@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\Auth\AdminLoginController;
 use App\Http\Controllers\Api\AboutController;
 use App\Http\Controllers\Api\Auth\RestoreController;
 use App\Http\Controllers\Api\Auth\SignInController;
@@ -28,17 +27,6 @@ use Illuminate\Support\Facades\Route;
 
 // Api check password
 Route::middleware('checkPassword')->group(function () {
-    // Admin Apis
-    Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
-        // Admin Login
-        Route::get('login', [AdminLoginController::class, 'login']);
-        Route::post('login', [AdminLoginController::class, 'check_admin_credentials']);
-        // Dashboard
-        Route::middleware('checkAdminToken:admin-api')->group(function () {
-            // Dashboard Apis
-        });
-    });
-
     // Site Apis
     Route::namespace('Api')->group(function () {
         //
@@ -56,11 +44,11 @@ Route::middleware('checkPassword')->group(function () {
         // Auth Apis
         //
         // Sign Up
-        Route::get('signup', [SignUpController::class, 'signUp']);
-        Route::post('signup', [SignUpController::class, 'store_details']);
+        Route::get('sign_up', [SignUpController::class, 'sign_up']);
+        Route::post('sign_up', [SignUpController::class, 'store_details']);
         // Sign In
-        Route::get('signin', [SignInController::class, 'signin']);
-        Route::post('signin', [SignInController::class, 'check_credentials']);
+        Route::get('sign_in', [SignInController::class, 'sign_in'])->name('sign_in');
+        Route::post('sign_in', [SignInController::class, 'check_credentials']);
         // Restore
         Route::get('restore', [RestoreController::class, 'restore']);
         Route::post('restore', [RestoreController::class, 'send_email_code']);

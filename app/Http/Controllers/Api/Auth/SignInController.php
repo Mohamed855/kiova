@@ -12,7 +12,7 @@ class SignInController extends Controller
 {
     use GeneralTrait;
 
-    public function signin(LoginRequest $request)
+    public function sign_in()
     {
         //
     }

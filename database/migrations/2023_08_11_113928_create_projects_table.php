@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('image');
-            $table->foreignIdFor(Gallery::class);
             $table->foreignIdFor(Service::class);
             $table->text('description')->nullable();
+            $table->boolean('recent')->default(0);
             $table->timestamps();
         });
     }

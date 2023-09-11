@@ -10,14 +10,10 @@ class CallRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'phone',
-        'user_id',
-        'status',
-    ];
+    protected $fillable = [ 'phone', 'user_id' ];
 
     public function user(): BelongsTo
     {
-        return $this->BelongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }

@@ -3,30 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\ProfilePictureRequest;
-use App\Http\Requests\Api\ReviewRequest;
-use App\Http\Requests\Api\UpdateDetailsRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use App\Traits\GeneralTrait;
 
 class UserController extends Controller
 {
     use GeneralTrait;
-    public function profile(string $user_name)
+    public function profile(string $user_name): JsonResponse
     {
-        // show user profile page
+        return $this->returnSuccess('User profile page');
     }
 
-    public function edit(string $user_name)
+    public function edit(string $user_name): JsonResponse
     {
-        // show user edit details page
+        return $this->returnSuccess('Edit user profile page');
     }
 
-    public function update(UpdateDetailsRequest $request, string $user_name)
+    public function update(Request $request, string $user_name)
     {
         // update user details
     }
 
-    public function update_picture(ProfilePictureRequest $request, string $user_name)
+    public function update_picture(Request $request, string $user_name)
     {
         // update user profile picture
     }
@@ -36,7 +35,7 @@ class UserController extends Controller
         // update user profile picture
     }
 
-    public function send_review(ReviewRequest $request, string $user_name)
+    public function send_review(Request $request, string $user_name)
     {
         // send review
     }

@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckPassword
+class AssignGuard
 {
     use GeneralTrait;
 
@@ -16,12 +16,14 @@ class CheckPassword
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $guard = null): Response
     {
-        $api_password = env('API_PASSWORD');
-        if ($request->header('api_password') === $api_password || $request['api_password'] === $api_password) {
-            return $next($request);
+        if($guard != null) {
+            auth()->shouldUse($guard);
+            if (! $this->checkToken($request)) {
+                return redirect()->route('sign_in', [ 'message' => 'Something went wrong' ]);
+            }
         }
-        return $this->returnError(401, 'You are not authorized');
+        return $next($request);
     }
 }

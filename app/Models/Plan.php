@@ -10,18 +10,15 @@ class Plan extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'total_price',
-    ];
+    protected $guarded = [];
 
-    public function user(): BelongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }
 
-    public function planServices() : BelongsToMany
+    public function planServices(): BelongsToMany
     {
-        return $this->belongsToMany(PlanService::class)->using(Plan_PlanService::class);
+        return $this->belongsToMany(PlanService::class);
     }
 }

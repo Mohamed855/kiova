@@ -18,6 +18,7 @@ return new class extends Migration
             $table->tinyInteger('rate');
             $table->text('review')->nullable();
             $table->boolean('public')->default(0);
+            $table->boolean('top')->default(0);
             $table->timestamps();
         });
     }

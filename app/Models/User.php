@@ -20,15 +20,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'password',
-        'profile_image',
-        'role',
-        'plan_id',
-    ];
+    protected $fillable = [ 'name', 'email', 'phone', 'password', 'profile_image', 'role', 'plan_id' ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -37,7 +29,6 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -46,7 +37,6 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
@@ -57,17 +47,17 @@ class User extends Authenticatable implements JWTSubject
 
     public function call_request(): HasMany
     {
-        return $this->HasMany(CallRequest::class);
+        return $this->hasMany(CallRequest::class);
     }
 
-    public function contact(): HasMany
+    public function feedback(): HasMany
     {
-        return $this->HasMany(Contact::class);
+        return $this->hasMany(Feedback::class);
     }
 
     public function Reviews(): HasMany
     {
-        return $this->HasMany(Review::class);
+        return $this->hasMany(Review::class);
     }
 
     /**
@@ -85,6 +75,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return array
      */
+
     public function getJWTCustomClaims(): array
     {
         return [];

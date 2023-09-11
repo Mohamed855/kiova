@@ -5,26 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'image',
-        'gallery_id',
-        'service_id',
-        'description',
-    ];
+    protected $guarded = [];
 
-    public function gallery(): HasOne
+    public function images(): HasMany
     {
-        return $this->HasOne(Gallery::class);
+        return $this->hasMany(Image::class);
     }
-    public function service(): BelongsTo
+    public function services(): BelongsTo
     {
-        return $this->BelongsTo(Service::class);
+        return $this->belongsTo(Service::class);
     }
 }

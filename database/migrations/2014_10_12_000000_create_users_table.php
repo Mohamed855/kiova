@@ -16,13 +16,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('phone');
             $table->string('password');
             $table->string('profile_image')->nullable();
             $table->tinyInteger('role')->default(2);
             $table->foreignIdFor(Plan::class)->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }
